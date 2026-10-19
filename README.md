@@ -7,3 +7,5 @@ Nivel 2: configurá local/global y PFF para que ningún proceso supere cierta ta
 
 Nivel 3: elegí el tamaño de página para minimizar la sobrecarga.
 Cada nivel da puntaje y el curso puede competir en un ranking por celular con un QR.
+
+Nivel 4 : Trivia de preguntas Son 8 preguntas, dos por bloque, con cuatro opciones cada una.
