@@ -16,10 +16,10 @@ Es la actividad dinámica del trabajo grupal **Memory Lab**: en lugar de solo le
 **Puntaje máximo total: 1180.**
 
 ### Cómo se puntúa
-- **Nivel 1:** 10 puntos por cada segundo en que la CPU útil está en 70% o más.
-- **Nivel 2:** 100 puntos si se elige el tamaño exacto, 50 si es el tamaño vecino (sobrecarga hasta 26% mayor) y 10 en otro caso, por cada ronda.
-- **Nivel 3:** 50 puntos por cada predicción correcta.
-- **Nivel 4:** 25 puntos por respuesta correcta, más hasta 10 de bonus por responder rápido (se reduce 1 punto por segundo).
+- **Reto 1:** 10 puntos por cada segundo en que la CPU útil está en 70% o más.
+- **Reto 2:** 100 puntos si se elige el tamaño exacto, 50 si es el tamaño vecino (sobrecarga hasta 26% mayor) y 10 en otro caso, por cada ronda.
+- **Reto 3:** 50 puntos por cada predicción correcta.
+- **Reto 4:** 25 puntos por respuesta correcta, más hasta 10 de bonus por responder rápido (se reduce 1 punto por segundo).
 
 ## Conceptos que cubre
 
