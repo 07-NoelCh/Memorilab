@@ -6,7 +6,7 @@ Es la actividad dinámica del trabajo grupal **Memory Lab**: en lugar de solo le
 
 ## Qué se aprende en cada nivel
 
-| Nivel | Tema | Qué hay que hacer | Puntaje máx. |
+| Retos | Tema | Qué hay que hacer | Puntaje máx. |
 |---|---|---|---|
 | 1 | Control de carga, thrashing y swapping (3.5.2) | Llegan procesos cada 4 segundos a una RAM de 16 marcos. Tocar un proceso lo envía al disco (swap out) o lo trae de vuelta (swap in). Hay que mantener la CPU útil en 70% o más durante 30 segundos. | 300 |
 | 2 | Tamaño de página (3.5.3) | Un slider cambia el tamaño de página y muestra en vivo la tabla de páginas y la fragmentación interna. Hay 3 rondas (256 KB, 1 MB y 4 MB) para encontrar el tamaño que minimiza la sobrecarga. | 300 |
