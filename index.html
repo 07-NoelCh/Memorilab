@@ -32,11 +32,9 @@ input[type=text]{font:inherit;width:100%;max-width:320px;padding:10px 12px;borde
 
 <section class="s" id="home">
 <h1>Memory Lab Challenge</h1>
-<p class="mut">Cuatro retos sobre la sección 3.5 de Tanenbaum: control de carga, tamaño de página, Copy-on-Write y una trivia final. Los tres primeros suman hasta 300 puntos cada uno y la trivia hasta 280 (25 por acierto y hasta 10 de bonus por responder rápido). Tu mejor puntaje entra al ranking del curso.</p>
+<p class="mut">Cuatro retos sobre la sección 3.5 de Tanenbaum: control de carga, tamaño de página, Copy-on-Write y una trivia final. Los tres primeros suman hasta 300 puntos cada uno y la trivia hasta 280 (25 por acierto y hasta 10 de bonus por responder rápido).</p>
 <div class="card"><p><b>Nivel 1.</b> Mantené la CPU útil por encima del 70% mientras llegan procesos.</p><p><b>Nivel 2.</b> Elegí el tamaño de página que minimiza la sobrecarga.</p><p><b>Nivel 3.</b> Predecí cuándo el sistema operativo copia una página.</p><p><b>Nivel 4.</b> Trivia de 8 preguntas: ¿qué pasa si...?</p></div>
-<label for="nm">Tu nombre para el ranking</label><input type="text" id="nm" maxlength="20" placeholder="Nombre o apodo" autocomplete="off">
-<div class="card"><h2 style="font-size:22px">Ranking del curso</h2><table><tbody class="rkt"><tr><td colspan="3" class="mut">Cargando…</td></tr></tbody></table><p class="mut rkn" style="margin-top:10px"></p></div>
-<div class="card"><b>Jugando ahora</b><p class="mut live" style="margin:6px 0 0">Nadie conectado todavía.</p></div>
+<label for="nm">Tu nombre</label><input type="text" id="nm" maxlength="20" placeholder="Nombre o apodo" autocomplete="off">
 <button onclick="go()">Empezar</button>
 </section>
 
@@ -82,9 +80,9 @@ input[type=text]{font:inherit;width:100%;max-width:320px;padding:10px 12px;borde
 </section>
 
 <section class="s" id="fin" hidden>
-<h1>Puntaje final: <span id="tot"></span> puntos</h1>
+<h1><span id="who"></span>: <span id="tot"></span> puntos</h1>
 <p id="rk"></p>
-<div class="card"><h2 style="font-size:22px">Ranking del curso</h2><table><tbody class="rkt"><tr><td colspan="3" class="mut">Cargando…</td></tr></tbody></table><p class="mut rkn" style="margin-top:10px"></p></div>
+<div class="card"><h2 style="font-size:22px">Mejores 5 puntajes</h2><table><tbody id="top5"></tbody></table><p class="mut" style="margin-top:10px">Se guardan en este dispositivo y navegador.</p></div>
 <div class="card mut"><p>Lo que viste: el thrashing aparece cuando los conjuntos de trabajo superan la RAM y se resuelve con swapping; el tamaño óptimo de página sale de p = √(2·s·e); y Copy-on-Write copia solo cuando alguien escribe.</p></div>
 <button onclick="score=0;show('home')">Jugar de nuevo</button>
 </section>
@@ -144,7 +142,7 @@ let k4,sc4,an4,t4;
 function l4start(){k4=0;sc4=0;draw4();show('l4')}
 function draw4(){const q=T[k4];$('#q4').textContent=`${k4+1}/8 · ${sc4} pts`;$('#p4').textContent=q[0];$('#o4').innerHTML=q[1].map((o,i)=>`<button class="alt" style="text-align:left" onclick="a4(${i})">${'ABCD'[i]}. ${o}</button>`).join('');$('#f4').textContent='';$('#n4').hidden=true;an4=false;t4=Date.now()}
 function a4(i){if(an4)return;an4=true;const q=T[k4],ok=i===q[2];if(ok)sc4+=25+Math.max(0,10-Math.floor((Date.now()-t4)/1000));document.querySelectorAll('#o4 button').forEach((b,j)=>{if(j===q[2]){b.style.background='var(--ok)';b.style.color='#fff'}else if(j===i){b.style.background='var(--bad)';b.style.color='#fff'}});$('#q4').textContent=`${k4+1}/8 · ${sc4} pts`;$('#f4').innerHTML=`<span class="${ok?'ok':'no'}">${ok?'Correcto.':'No.'}</span> ${q[3]}`;$('#n4').hidden=false;$('#n4').textContent=k4<7?'Siguiente':'Ver puntaje'}
-function next4(){if(k4<7){k4++;draw4()}else{score+=sc4;$('#tot').textContent=score;$('#rk').textContent=score>=900?'Dominás la paginación: nivel Tanenbaum.':score>=550?'Buen manejo de la memoria. Repasá los puntos donde fallaste.':'Hay que repasar la sección 3.5. Probá de nuevo.';saveScore();show('fin')}}
+function next4(){if(k4<7){k4++;draw4()}else{score+=sc4;$('#tot').textContent=score;$('#rk').textContent=score>=900?'Dominás la paginación: nivel Tanenbaum.':score>=550?'Buen manejo de la memoria. Repasá los puntos donde fallaste.':'Hay que repasar la sección 3.5. Probá de nuevo.';saveLocal();show('fin')}}
 // Ranking compartido y jugadores en vivo
 let DB=null,ME=null,ROOM=null,NAME='Anónimo';
 const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -158,4 +156,9 @@ try{const r=DB.collection('ranking').doc(ME),c=await r.get();if(!c.exists||c.dat
 const u=await claude.use('user');if(u)ME=await u.id();DB=await claude.use('db');ROOM=await claude.use('room');
 if(DB)DB.collection('ranking').orderBy('score','desc').limit(10).onSnapshot(sn=>drawRk(sn.docs.map(d=>Object.assign({id:d.id},d.data()))),()=>drawRk(null));else drawRk(null);
 if(ROOM){ROOM.onPeers(ch=>drawLive(ch.peers));setPres('home')}}catch(e){drawRk(null)}})();
+function saveLocal(){let L=[];try{L=JSON.parse(localStorage.getItem('mlc_top')||'[]')}catch(e){}
+const now=Date.now();L.push({n:NAME,s:score,t:now});L.sort((a,b)=>b.s-a.s);L=L.slice(0,50);
+try{localStorage.setItem('mlc_top',JSON.stringify(L))}catch(e){}
+$('#who').textContent=NAME;
+$('#top5').innerHTML=L.slice(0,5).map((d,i)=>`<tr class="${d.t===now?'me':''}"><td>${i+1}</td><td>${esc(d.n)}</td><td style="text-align:right"><b>${d.s}</b></td></tr>`).join('')}
 </script></body></html>
