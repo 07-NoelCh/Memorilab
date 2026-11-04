@@ -1,4 +1,4 @@
-# Memory Lab Challenge
+# Kernel Challenge
 
 Juego interactivo para repasar las **cuestiones de diseño de los sistemas de paginación** (sección 3.5 de *Sistemas Operativos Modernos*, Andrew S. Tanenbaum, 3.ª ed., pp. 217-226).
 
